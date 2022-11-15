@@ -46,8 +46,12 @@ while True:
                 AccString = AccString + reading[0:iiii+2]
                 # print("Fuck")
             else:
-                AccString = AccString + reading
-                # print("Yeag")
+                if (reading[0] == reading[-1]):
+                    AccString = AccString + reading
+                    SerialData.write(bytes("1", "utf-8"))
+                else:
+                    SerialData.write(bytes("0", "utf-8"))
+                
         
     except:
         pass
