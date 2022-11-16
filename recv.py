@@ -56,10 +56,10 @@ while True:
                     print("Found")
                     if reading[0] == AccString[-1][0]:
                         print(iii,reading,"Renaming last")
-                        AccString[-1] = reading
+                        AccString[-1] = reading[0:FooterFoundAt+2]
                     else:
                         AccString.append(reading[0:FooterFoundAt+2])
-                    SerialData.write(bytes(reading, "utf-8"))
+                    SerialData.write(bytes(reading[0:FooterFoundAt+2], "utf-8"))
                 else:
                     print("Not Found", AccString[-1][0])
                     if reading[0] == AccString[-1][0]:
