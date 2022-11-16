@@ -6,3 +6,8 @@ strings = [["!001z"],
 
 print(sorted(strings))
 print("!"+"a"*248+"!")
+
+Headers = ["!","?"]
+
+for i in range(20):
+    print(Headers[i%2])

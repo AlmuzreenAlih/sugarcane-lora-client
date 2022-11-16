@@ -9,7 +9,7 @@
 #include <RH_RF95.h>
 #include <SPI.h>
 
-#define CLIENT_ADDRESS 1
+#define CLIENT_ADDRESS 10
 #define SERVER_ADDRESS 2
 // Setup GPIO Pins
 #define RFM95_CS 4
@@ -23,7 +23,7 @@
 RH_RF95 rf95(RFM95_CS, RFM95_INT);
 
 // Class to manage message delivery and receipt, using the driver declared above
-RHDatagram manager(rf95, SERVER_ADDRESS);
+RHDatagram manager(rf95, CLIENT_ADDRESS);
 
 // Need this on Arduino Zero with SerialUSB port (eg RocketScream Mini Ultra Pro)
 //#define Serial SerialUSB
@@ -66,10 +66,11 @@ void setup()
 
 // Dont put this on the stack:
 uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
-
+uint8_t buf2[RH_RF95_MAX_MESSAGE_LEN];
 void loop()
 {
   if (manager.available()) {
+    
     uint8_t len = sizeof(buf);
     uint8_t from;
     if (manager.recvfrom(buf, &len, &from)) {
@@ -78,13 +79,15 @@ void loop()
       //      Serial.print(": ");
       Serial.println((char*)buf);
 
-      uint8_t data[] = "djlflfdkjfd";
-          manager.sendto(data, sizeof(data), from);
-          Serial.print("Sent back");
-
       while(1) {
         if (Serial.available()) {
-          char Recv;
+          String Recv = Serial.readString();
+          for (int i = 0; i < RH_RF95_MAX_MESSAGE_LEN; i++)
+          {
+            buf2 [i] = '\0';
+          }          
+          Recv.toCharArray(buf2, 300);
+          manager.sendto(buf2, sizeof(buf2), from);
           break;
         }
       }
