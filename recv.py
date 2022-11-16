@@ -48,7 +48,7 @@ while True:
             else:
                 if (reading[0] == reading[-1]):
                     AccString = AccString + reading
-                    SerialData.write(bytes("1", "utf-8"))
+                    SerialData.write(bytes(reading, "utf-8"))
                 else:
                     SerialData.write(bytes("0", "utf-8"))
                 

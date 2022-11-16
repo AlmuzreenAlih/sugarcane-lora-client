@@ -63,7 +63,7 @@ void setup()
   //  driver.setCADTimeout(10000);
 }
 
-uint8_t data[] = "And hello back to you";
+
 // Dont put this on the stack:
 uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
 
@@ -78,12 +78,16 @@ void loop()
       //      Serial.print(": ");
       Serial.println((char*)buf);
 
-      if (Serial.available()) {
-        char Recv;
-        data[] = Serial.readString();
-        manager.sendto(data, sizeof(data), from);
-      }
+      uint8_t data[] = "djlflfdkjfd";
+          manager.sendto(data, sizeof(data), from);
+          Serial.print("Sent back");
 
+      while(1) {
+        if (Serial.available()) {
+          char Recv;
+          break;
+        }
+      }
       // Send a reply back to the originator client
       //      manager.sendto(data, sizeof(data), from);
     }
