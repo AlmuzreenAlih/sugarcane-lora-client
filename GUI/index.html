@@ -1,0 +1,62 @@
+<DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> LORA Based Server for Sugarcane Project</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="style.css" rel="stylesheet">
+    <link href="canon.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script type="text/javascript" src="js.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <title>jQuery UI Dialog - Default functionality</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <script>
+        $( function() {
+          $( "#dialog" ).dialog();
+        } );
+        </script>      
+</head>
+
+<body>
+    <div id="form1" class="form">
+        <div id="dialog" title="Information">
+            <p id="prompt">Welcome back, user. </p>
+            <div class="centerInside">
+                <button id="conbut" onclick="Confirmed()" class="w25">OK</button>
+            </div>
+            <script>
+                function Confirmed() {
+                    $( "#dialog" ).dialog("close");
+                }
+            </script>
+        </div>
+        <div class="TextContainer abs l2 t90 w96 h8 rounded">
+            <strong id="progressLabel"></strong>
+        </div>
+        <div id="PicsContainer" class="flex abs l2 t4 w54 h84 rounded">
+            <h6 id="lll">Image List</h6>
+        </div>
+        <div id="PicsPanel" class="abs l58 t4 w40 h84 rounded">
+            <h6 id="lll">Preview</h6>
+            <img id="ImagePrev" class="abs l5 t10 w90 h50">
+            <strong id="Classification" class="abs l10 t65 w80 h5">Classification:</strong>
+            <strong id="Percentage" class="abs l10 t70 w80 h5">Percentage:</strong>
+        </div>
+        <button id="Hello_Button" class="hidden btn btn-primary btn-sm abs l37 t76 tr"
+            onclick="JS_Hello_Button_Function()">CAPTURE</button>
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</body>
+</html>
