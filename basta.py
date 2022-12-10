@@ -1,13 +1,14 @@
-strings = [["!001z"],
-           ["!002z"],
-           ["!003z"],
-           ["!003x"],
-           ["!002x"],]
+# strings = [["!001z"],
+#            ["!002z"],
+#            ["!003z"],
+#            ["!003x"],
+#            ["!002x"],]
 
-print(sorted(strings))
-print("!"+"a"*248+"!")
+# print(sorted(strings))
+# print("!"+"a"*248+"!")
 
-Headers = ["!","?"]
+# Headers = ["!","?"]
 
-for i in range(20):
-    print(Headers[i%2])
+# for i in range(20):
+#     print(Headers[i%2])
+

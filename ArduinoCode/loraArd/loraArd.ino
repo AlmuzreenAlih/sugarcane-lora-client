@@ -67,6 +67,7 @@ void setup()
 // Dont put this on the stack:
 uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
 uint8_t buf2[RH_RF95_MAX_MESSAGE_LEN];
+uint8_t buf3[20] = "rtrtrtrt";
 void loop()
 {
   if (manager.available()) {
@@ -78,15 +79,15 @@ void loop()
       //      Serial.print(from, HEX);
       //      Serial.print(": ");
       Serial.println((char*)buf);
-
+      // manager.sendto(buf3, sizeof(buf3), from);
       while(1) {
         if (Serial.available()) {
           String Recv = Serial.readString();
           for (int i = 0; i < RH_RF95_MAX_MESSAGE_LEN; i++)
           {
-            buf2 [i] = '\0';
+            buf2 [i] = NULL;
           }          
-          Recv.toCharArray(buf2, 300);
+          Recv.toCharArray(buf2, sizeof(buf2));
           manager.sendto(buf2, sizeof(buf2), from);
           break;
         }

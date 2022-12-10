@@ -8,17 +8,14 @@
     
 //     console.log({ x, y });
   
-// });
+// }); 
 
-$(document).ready(function() {
-    $("img").on("click", function(event) {
-        var x = (event.pageX - this.offsetLeft)*640;
-        x = Math.floor((x/this.width));
-        var y = (event.pageY - this.offsetTop)*480;
-        y = Math.floor((y/this.height));
-        alert("X Coordinate: " + x + " Y Coordinate: " + y);
-    });
-});
+
+function IdentifyVariety(numberstring) {
+    var ns = numberstring*100;
+    Varieties = ["Phil-1999","Phil-2000","PHIL-2004-1011","PHIL-2006-2289", "PHIL-2007-243"]
+    return Varieties[ns%(Varieties.length)];
+}
 
 async function JS_Hello_Button_Function() {
     var a = await eel.Py_HelloFunction("Hello Python")();
@@ -60,19 +57,39 @@ function JS_Delete_Elements() {
 
 eel.expose(JS_Send_Paths);
 function JS_Send_Paths(Paths) {
-    Paths.forEach(element => {
+    Paths.forEach(element1 => {
         const para = document.createElement("a");
         // alert("Hi1")
-        para.innerHTML = element.substring(7,element.length);
+        para.innerHTML = element1.substring(7,element1.length);
         // alert("Hi2")
-        let arr_fname = (element.substring(7,element.length-4)).split(" ");
-        // alert(arr_fname);
-        if (arr_fname[1] == "not_mature") {ClassName = "Not Mature";}
-        if (arr_fname[1] == "mature") {ClassName = "Mature";}
+        
         para.onclick = function() {
-            document.getElementById("ImagePrev").src = element;
-            document.getElementById("Classification").innerHTML = "Classification: " + (ClassName);
-            document.getElementById("Percentage").innerHTML = "Percentage: " + arr_fname[2];
+            let arr_fname = (element1.substring(7,element1.length-4)).split("-");
+        console.log(arr_fname[1]);
+        console.log(arr_fname[2]);
+        let arr_fname_1 = arr_fname[1].split(" ")
+        let arr_fname_2 = arr_fname[2].split(" ")
+        ClassNames = [];
+        ClassNames2 = "";
+        // alert("Hi3")
+
+        arr_fname_1.forEach(element2 => {
+            if (element2 == "nm") {ClassNames.push("Not Matured")}
+            if (element2 == "m") {ClassNames.push("Matured")}
+        });
+        let yy = 0;
+        // alert("Hi4")
+
+        arr_fname_2.forEach(element3 => {
+            ClassNames[yy] = ClassNames[yy] + " " + element3 + " (" + IdentifyVariety(element3) + ")"
+            ClassNames2 = ClassNames2 + ClassNames[yy] + "<br>"
+            yy++;
+        });
+            console.log(element1)
+            console.log(ClassNames2)
+            document.getElementById("ImagePrev").src = element1;
+            document.getElementById("Classification").innerHTML = ClassNames2;
+            document.getElementById("Percentage").innerHTML = "";
         };
         document.getElementById("PicsContainer").appendChild(para);
     });
@@ -85,9 +102,15 @@ function JS_Show_Timeout() {
 }
 
 eel.expose(JS_Show_Success);
-function JS_Show_Success() {
-    document.getElementById("prompt").innerHTML = "File successfully received."
-    $( "#dialog" ).dialog("open");
+function JS_Show_Success(n) {
+    if (n == 1) {
+        document.getElementById("prompt").innerHTML = "Results successfully received."
+        $( "#dialog" ).dialog("open");
+    }
+    if (n == 2) {
+        document.getElementById("prompt").innerHTML = "File successfully received."
+        $( "#dialog" ).dialog("open");
+    }
 }
 
 const loadImg = function(img, url) {
@@ -100,3 +123,24 @@ const loadImg = function(img, url) {
   
   const img1 = new Image();
 
+
+let element1="img123456-nm m nm m-0.8 0.77 0.5 0.44.jpg"
+let arr_fname = (element1.substring(7,element1.length-4)).split("-");
+console.log(arr_fname[1]);
+console.log(arr_fname[2]);
+let arr_fname_1 = arr_fname[1].split(" ")
+let arr_fname_2 = arr_fname[2].split(" ")
+ClassNames = [];
+ClassNames2 = "";
+arr_fname_1.forEach(element2 => {
+    if (element2 == "nm") {ClassNames.push("Not Matured")}
+    if (element2 == "m") {ClassNames.push("Matured")}
+});
+let yy = 0;
+arr_fname_2.forEach(element3 => {
+    ClassNames[yy] = ClassNames[yy] + " " + element3
+    ClassNames2 = ClassNames2 + ClassNames[yy] + "\n"
+    yy++;
+});
+
+console.log(ClassNames2);

@@ -37,23 +37,13 @@ import warnings
 import serial
 import serial.tools.list_ports
 
-arduino_ports = [
-    p.device
-    for p in serial.tools.list_ports.comports()
-    if 'Arduino' in p.description  # may need tweaking to match new arduinos
-]
-if not arduino_ports:
-    raise IOError("No Arduino found")
-if len(arduino_ports) > 1:
-    warnings.warn('Multiple Arduinos found - using the first')
+SerialData = serial.Serial("com7", 115200, timeout = 0.2)
 
-SerialData = serial.Serial(arduino_ports[0])
-
-# SerialData.setDTR(False)
-# time.sleep(1)
-# SerialData.flushInput()
-# SerialData.setDTR(True)
-# time.sleep(2)
+SerialData.setDTR(False)
+time.sleep(1)
+SerialData.flushInput()
+SerialData.setDTR(True)
+time.sleep(2)
 # SerialData.write(bytes("2", "utf-8"))
 # reading = SerialData.readline().decode("utf-8")
 # reading = SerialData.readline().decode("utf-8")
@@ -82,7 +72,8 @@ def MainLoop():
         eel.JS_Show_Timeout()
         eel.JS_Show_Progress("STATUS: READY TO RECEIVE A FILE")    
         
-    try:            
+    try:           
+        print(str(time.time())) 
         if reading != "":
             print(reading)
 
@@ -96,29 +87,53 @@ def MainLoop():
             PacketsTotal = int(reading[EndFoundAt+2:EndFoundAt2])
             PacketsSuccess = 0
             Timer1.start(30)
+            AccString = ["s"]
+        elif reading[0] == '#':
+            EndFoundAt = reading.find('$$')
+            EndFoundAt2 = reading.find('^^')
+            FName = reading[1:EndFoundAt]
+            print("start: ", FName, reading[EndFoundAt+2:EndFoundAt2])
+            f = open("GUI/images/"+FName, "wb+")
+            f.write(b' ') 
+            f.close()
+            mypath = "GUI/images"
+            onlyfiles = ["images/"+f for f in listdir(mypath) if isfile(join(mypath, f))]
+            eel.JS_Delete_Elements()
+            eel.JS_Send_Paths(onlyfiles)
+            eel.JS_Show_Success(1)
+            eel.JS_Show_Progress("STATUS: READY TO RECEIVE A FILE")  
+            print("done")
+            
+            
         elif Start == 1 and reading[0] == '+':
             print("end", len(AccString))
             SerialData.write(bytes("AA", "utf-8"))
             
-            AccStr = ""
-            for i in AccString:
-                if i != "s":
-                    AccStr = AccStr + i[1:-1]
-            print("encoding",AccStr[0],AccStr[1],AccStr[-1],AccStr[-2],AccStr[-3],len(AccStr),type(AccStr))
-            FinalString = base64.b64decode(AccStr[0:-2])
+            if len(AccString) > 50:
+                AccStr = ""
+                for i in AccString:
+                    if i != "s":
+                        AccStr = AccStr + i[1:-1]
+                print("encoding",AccStr[0],AccStr[1],AccStr[-1],AccStr[-2],AccStr[-3],len(AccStr),type(AccStr))
+                FinalString = base64.b64decode(AccStr[0:-2])
 
-            f = open("GUI/images/"+FName, "wb+")
-            f.write(FinalString) 
-            f.close()
+                f = open("GUI/images/"+FName, "wb+")
+                f.write(FinalString) 
+                f.close()
+            else:
+                f = open("GUI/images/"+FName, "wb+")
+                f.write(b' ') 
+                f.close()
             print("saved")
             Start = 0
             mypath = "GUI/images"
             onlyfiles = ["images/"+f for f in listdir(mypath) if isfile(join(mypath, f))]
             eel.JS_Delete_Elements()
             eel.JS_Send_Paths(onlyfiles)
-            eel.JS_Show_Success()
+            eel.JS_Show_Success(2)
             eel.JS_Show_Progress("STATUS: READY TO RECEIVE A FILE")  
             Timer1.stop()
+            AccString = ["s"]
               
         elif Start == 1 and reading != '\r' and reading != '\n' and reading != '' and reading != '\r\n' and reading != 'Success':               
             # print(reading, reading[0], reading[-1])
